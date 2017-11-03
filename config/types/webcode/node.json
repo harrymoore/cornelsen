@@ -1,0 +1,179 @@
+{
+    "title": "Webcode",
+    "description": "A Module Category or Sub Category which can contain products",
+    "_qname": "cornelsen:webcode",
+    "_type": "d:type",
+    "_parent": "n:node",
+    "type": "object",
+    "properties": {
+        "webcode": {
+            "title": "Webcode",
+            "description": "Webcode is used in URLs and are entered manually by users into search fields",
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 8,
+            "pattern": "^[0-9A-Z]+$"
+        },
+        "title": {
+            "title": "Titel",
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "title": "Description",
+            "description": "Additional description for the webcode content",
+            "type": "string",
+            "maxLength": 300,
+            "required":false
+        },
+        "legacyURL": {
+            "title": "legacyURL",
+            "description": "URL vom alten Webcode",
+            "type": "string",
+            "format": "uri"
+        },
+        "linkLists": {
+            "type": "array",
+            "title": "Link Lists",
+            "description": "sortable array of link lists",
+            "items": {
+                "type": "object",
+                "title": "Link List",
+                "properties": {
+                    "title": {
+                        "title": "Titel",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Beschreibung",
+                        "type": "string"
+                    },
+                    "links": {
+                        "type": "array",
+                        "title": "Links",
+                        "description": "Link List",
+                        "items": {
+                            "type": "object",
+                            "title": "Link",
+                            "properties": {
+                                "title": {
+                                    "title": "Titel",
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "url": {
+                                    "title": "url",
+                                    "description": "Link URL",
+                                    "type": "string",
+                                    "format": "uri",
+                                    "required": true
+                                },
+                                "description": {
+                                    "title": "Description",
+                                    "description": "Additional description for the webcode content",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }            
+                }
+            }
+        },
+        "videos": {
+            "type": "array",
+            "title": "Videos",
+            "description": "sortable array of videos",
+            "items": {
+                "type": "object",
+                "title": "Video",
+                "properties": {
+                    "title": {
+                        "title": "Titel",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Beschreibung",
+                        "type": "string"
+                    },
+                    "elvisID": {
+                        "title": "Elvis ID",
+                        "type": "string",
+                        "required": true
+                    },
+                    "sdnID": {
+                        "title": "3Q ID",
+                        "type": "string"
+                    },
+                    "displayInline": {
+                        "title": "Display Inline",
+                        "type": "boolean"
+                    },
+                    "allowDownload": {
+                        "title": "Download erlauben",
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "audio": {
+            "type": "array",
+            "title": "Videos",
+            "description": "sortable array of audio files",
+            "items": {
+                "type": "object",
+                "title": "Audio File",
+                "properties": {
+                    "title": {
+                        "title": "Titel",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Beschreibung",
+                        "type": "string"
+                    },
+                    "elvisID": {
+                        "title": "Elvis ID",
+                        "type": "string",
+                        "required": true
+                    },
+                    "sdnID": {
+                        "title": "3Q ID",
+                        "type": "string"
+                    },
+                    "displayInline": {
+                        "title": "Display Inline",
+                        "type": "boolean"
+                    },
+                    "allowDownload": {
+                        "title": "Download erlauben",
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "downloads": {
+            "type": "array",
+            "title": "Downloads",
+            "description": "sortable array of downloads",
+            "items": {
+                "type": "object",
+                "title": "Download",
+                "properties": {
+                    "title": {
+                        "title": "Titel",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Beschreibung",
+                        "type": "string"
+                    },
+                    "elvisID": {
+                        "title": "Elvis ID",
+                        "type": "string",
+                        "required": true
+                    }
+                }
+            }
+        }
+    }
+}

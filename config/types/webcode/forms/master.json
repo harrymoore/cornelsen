@@ -1,0 +1,82 @@
+{
+    "title": "Webcode",
+    "engineId": "alpaca1",
+    "fields": {
+        "webcode": {
+            "type": "uppercase",
+            "disallowEmptySpaces": true,
+            "minLength": 6,
+            "maxLength": 8,
+            "label": "Webcode",
+            "placeholder": "webcode",
+            "helpers": [
+                "Should consist of 6-8 uppercase letters and numbers"
+            ]
+        },
+        "title": {
+            "type": "text",
+            "label": "Titel",
+            "helpers": [
+                "Used in the frontend as the headline of the webcode detail page and for webcode listings"
+            ]
+        },
+        "description": {
+            "type": "ckeditor",
+            "label": "Beschreibung",
+            "maxLength": 300,            
+            "helpers": [
+                "Additional description for the webcode content"
+            ],
+            "ckeditor": {
+                "toolbar": [
+                    {
+                        "name": "basicstyles",
+                        "groups": [
+                            "basicstyles",
+                            "cleanup"
+                        ],
+                        "items": [
+                            "Bold",
+                            "Italic",
+                            "Underline",
+                            "Strike",
+                            "Subscript",
+                            "Superscript",
+                            "-",
+                            "CopyFormatting",
+                            "RemoveFormat"
+                        ]
+                    },
+                    {
+                        "name": "document",
+                        "items": [
+                            "Cut",
+                            "Copy",
+                            "Paste",
+                            "PasteText",
+                            "-",
+                            "Undo",
+                            "Redo",
+                            "-",
+                            "basicstyles",
+                            "-",
+                            "Source"
+                        ]
+                    }
+                ],
+                "removeButtons": null
+            },
+
+            "legacyURL": {
+                "type": "url",
+                "label": "URL vom alten Webcode",
+                "helpers": [
+                    "required if 'legacyCode' is filled in"
+                ]
+            }
+    
+
+        }
+    },
+    "_form_key": "master"
+}
