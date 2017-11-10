@@ -1,0 +1,48 @@
+/** GLOBAL **/
+
+.cloudcms-theme .cloudcms-theme-header
+{
+    border: 0px;
+}
+
+.cloudcms-theme a {
+    color: #FF6600;
+}
+
+.cloudcms-theme a:visited {
+    color: #DD4400;
+}
+
+.cloudcms-theme .cloudcms-theme-footer {
+    background: url(./alg_logo_cornelsen_110x32.gif);
+    width: 110px;
+    height: 32px;
+}
+
+
+/** PLATFORM **/
+
+.cloudcms-theme .cloudcms-theme-header.cloudcms-theme-header-platform
+{
+    background-color: #FF6600;
+}
+
+.cloudcms-theme .cloudcms-theme-header.cloudcms-theme-header-platform .context-header-logo
+{
+    background: url(./cornelsen.png) no-repeat center !important;
+    /* width: 77px;
+    height: 48px; */
+}
+
+
+/** PROJECT **/
+
+.cloudcms-theme .cloudcms-theme-header.cloudcms-theme-header-project
+{
+    background-color: #C3BEBA;
+}
+
+.cloudcms-theme div[region="workspace-bar"] {
+    border-top: 0px;
+    background-color: #837E7A;
+}
