@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     UI.registerTheme({
         "key": "cornelsen-theme",
         "title": "Cornelsen Theme",
-        "module": moduleId + "/theme"
+        "module": moduleId + "/theme.js"
     });
     // require("./theme.js");
 
