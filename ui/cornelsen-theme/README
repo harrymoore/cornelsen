@@ -1,0 +1,7 @@
+To install this theme:
+
+1.  Go into Cloud CMS and register a new module.
+2.  Set the Source Type to GitHub and the URL to "https://github.com/harrymoore/cornelsen.git"
+3.  Set the path to "ui/cornelsen-theme"
+
+Deploy the module and refresh your browser.
