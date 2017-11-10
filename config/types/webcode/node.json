@@ -117,7 +117,7 @@
         },
         "audio": {
             "type": "array",
-            "title": "Videos",
+            "title": "Audio",
             "description": "sortable array of audio files",
             "items": {
                 "type": "object",
