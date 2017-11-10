@@ -8,5 +8,6 @@ define(function(require) {
         "title": "Cornelsen Theme",
         "module": "_modules/cornelsen-theme/theme"
     });
+    require("./theme.js");
 
 });
