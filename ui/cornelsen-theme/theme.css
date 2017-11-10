@@ -1,2 +1,7 @@
 /** GLOBAL **/
 
+.cloudcms-theme .cloudcms-theme-header {
+    background-color: #8FC862;
+    background-image: linear-gradient(#8FC862, #6AA43F);
+
+}
