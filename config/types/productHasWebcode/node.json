@@ -1,0 +1,7 @@
+{
+    "title": "product_has_webcode",
+    "type": "object",
+    "properties": {},
+    "_parent": "a:linked",
+    "description": "cornelsen:product_has_webcode"
+}

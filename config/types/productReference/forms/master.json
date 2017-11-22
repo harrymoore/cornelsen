@@ -1,0 +1,87 @@
+{
+    "engineId": "alpaca1",
+    "title": "Product Reference",
+    "fields": {
+        "materialNumber": {
+            "type": "text",
+            "label": "Materialnummer",
+            "required": true,
+            "helpers": [
+                "Corneslen internal ID to identify the product via their APIs (usually an SAP ID or ISBN)"
+            ]
+        },
+        "type": {
+            "type": "select",
+            "label": "Titel",
+            "required": true,
+            "optionLabels": [
+                "Product",
+                "Edition",
+                "Series"
+            ],
+            "helpers": [
+                "Type field to specify which kind of product it is"
+            ]
+        },
+        "webcodes": {
+            "type": "array",
+            "label": "Webcode references",
+            "toolbarSticky": true,
+            "items": {
+                "type": "object",
+                "fields": {
+                    "webcode": {
+                        "type": "node-picker",
+                        "label": "Webcode"
+                    },
+                    "chapter": {
+                        "type": "text",
+                        "label": "Kapitelname",
+                        "dependencies": {
+                            "type": [
+                                "product"
+                            ]
+                        }
+                    },
+                    "chapterNumber": {
+                        "type": "text",
+                        "label": "Kapitelnummer",
+                        "dependencies": {
+                            "type": [
+                                "product"
+                            ]
+                        }
+                    },
+                    "pageNumber": {
+                        "type": "text",
+                        "label": "Seite",
+                        "dependencies": {
+                            "type": [
+                                "product"
+                            ]
+                        }
+                    },
+                    "excerciseName": {
+                        "type": "text",
+                        "label": "Übungsname",
+                        "dependencies": {
+                            "type": [
+                                "product"
+                            ]
+                        }
+                    },
+                    "excerciseNumber": {
+                        "type": "text",
+                        "label": "Übungsnummer",
+                        "dependencies": {
+                            "type": [
+                                "product"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "_form_key": "master"
+}
