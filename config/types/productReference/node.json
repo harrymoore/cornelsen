@@ -1,0 +1,62 @@
+{
+    "title": "Product Reference",
+    "description": "Used to assign 'Webcode Content' instances to a Cornelsen product",
+    "_parent": "n:node",
+    "type": "object",
+    "_qname": "cornelsen:productReference",
+    "properties": {
+        "materialNumber": {
+            "title": "Materialnummer",
+            "description": "Corneslen internal ID to identify the product via their APIs (usually an SAP ID or ISBN)",
+            "type": "string",
+            "required": true
+        },
+        "type": {
+            "title": "Titel",
+            "type": "string",
+            "required": true,
+            "enum": [
+                "product",
+                "edition",
+                "series"
+            ]
+        },
+        "webcodes": {
+            "type": "array",
+            "title": "Webcodes",
+            "description": "Webcode references",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "webcode": {
+                        "type": "object",
+                        "_relator": {
+                            "associationType": "cornelsen:product_has_webcode",
+                            "nodeType": "cornelsen:webcode"
+                        }
+                    },
+                    "chapter": {
+                        "title": "Kapitelname",
+                        "type": "string"
+                    },
+                    "chapterNumber": {
+                        "title": "Kapitelnummer",
+                        "type": "string"
+                    },
+                    "pageNumber": {
+                        "title": "Kapitelname",
+                        "type": "Seite"
+                    },
+                    "excerciseName": {
+                        "title": "Übungsname",
+                        "type": "string"
+                    },
+                    "excerciseNumber": {
+                        "title": "Übungsnummer",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
