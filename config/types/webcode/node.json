@@ -1,10 +1,9 @@
 {
     "title": "Webcode",
-    "description": "A Module Category or Sub Category which can contain products",
-    "_qname": "cornelsen:webcode",
-    "_type": "d:type",
+    "description": "A Webcode with media content and links",
     "_parent": "n:node",
     "type": "object",
+    "_qname": "cornelsen:webcode",
     "properties": {
         "webcode": {
             "title": "Webcode",
@@ -24,7 +23,7 @@
             "description": "Additional description for the webcode content",
             "type": "string",
             "maxLength": 300,
-            "required":false
+            "required": false
         },
         "legacyURL": {
             "title": "legacyURL",
@@ -75,7 +74,7 @@
                                 }
                             }
                         }
-                    }            
+                    }
                 }
             }
         },
