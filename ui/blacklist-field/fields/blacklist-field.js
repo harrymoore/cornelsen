@@ -26,10 +26,11 @@ define(function(require, exports, module) {
             var baseStatus = this.base();
             var valInfo = this.validation;
             var value = this.getValue();
-            
-            var valInfo = {
-                "message": this.getMessage("blacklistedValue"),
-                "status": !Alpaca.isEmpty(this.blacklistedValues[value])
+            var exists = !Alpaca.isEmpty(this.blacklistedValues[value]);
+
+            valInfo["blacklistedValue"] = {
+                "message": !exists ? "" : this.getMessage("blacklistedValue"),
+                "status": !exists
             };
 
             return baseStatus && valInfo["blacklistedValue"]["status"];
@@ -102,13 +103,12 @@ define(function(require, exports, module) {
 
         /* end_builder_helpers */
     });
-
+    
     Alpaca.registerMessages({
-        "blacklistedValue": "Value is not allowed"
-    },{
+        "blacklistedValue": "Value is not allowed or already in use",
         "inUseValue": "Value is in use"
     });
-    
+
     Alpaca.registerFieldClass("blacklist", Alpaca.Fields.BlacklistField);
 
 });
