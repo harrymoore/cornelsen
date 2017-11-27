@@ -42,7 +42,57 @@ define(function(require, exports, module) {
         setup: function()
         {
             this.base();
-            this.blacklistedValues["ABC123"] = 1;
+            this.blacklistedValues = {};
+        },
+
+        beforeRenderControl: function(model, callback)
+        {
+            var self = this;
+            var listNodeId = this.options.listNodeId;
+            var listNodeProperty = this.options.listNodeProperty || "blacklist";
+            var existingIdType = this.options.existingIdType || "cornelsen:webcode";
+            var existingIdProperty = this.options.existingIdProperty || "webcode";
+            // var generateOnEmpty = !!this.options.generateOnEmpty;
+
+            if (!listNodeId) {
+                return callback();
+            }
+
+            Chain(Alpaca.globalContext.branch).queryNodes({
+                "_doc": listNodeId
+            }).then(function() {
+                if (this.size() === 0) {
+                    console.log("Could not find blacklist node");
+                    // return callback("Could not find blacklist node");
+                    return callback();
+                }
+    
+                this.keepOne().then(function() {
+                    var blacklistNode = this;
+                    var list = blacklistNode[listNodeProperty] || [];
+                    for(var i = 0; i < list.length; i++) {
+                        self.blacklistedValues[list[i]] = 1;
+                    }
+
+                    var query = {
+                        _type: existingIdType,
+                        _fields: {}
+                    };
+
+                    query._fields[existingIdProperty] = 1;
+
+                    Alpaca.globalContext.branch.subchain().queryNodes(query).then(function() {
+                        var list = this.asArray();
+                        console.log(JSON.stringify(list,null,2));
+
+                        for(var i = 0; i < list.length; i++) {
+                            self.blacklistedValues[list[i][existingIdProperty]] = list[i]._doc || 1;
+                        }
+
+                        callback();
+                    });
+                });
+            });
         },
 
         afterRenderControl: function(model, callback)
@@ -67,6 +117,13 @@ define(function(require, exports, module) {
                         "type": "string",
                         "default": "",
                         "readonly": true
+                    },
+                    "listNodeProperty": {
+                        "title": "blacklist property name",
+                        "description": "Name of the array propery on listNodeId",
+                        "type": "string",
+                        "default": "",
+                        "readonly": true
                     }
                 }
             });
@@ -82,6 +139,12 @@ define(function(require, exports, module) {
                 "fields": {
                     "listNodeId": {
                         "type": "text"
+                    },
+                    "listNodeProperty": {
+                        "type": "text"
+                    },
+                    "generateOnEmpty": {
+                        "type": "boolean"
                     }
                 }
             });
