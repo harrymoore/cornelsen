@@ -3,12 +3,17 @@
     "engineId": "alpaca1",
     "fields": {
         "webcode": {
-            "type": "uppercase",
+            "type": "blacklist",
             "disallowEmptySpaces": true,
             "minLength": 6,
             "maxLength": 8,
             "label": "Webcode",
             "placeholder": "webcode",
+            "listNodeId": "1e395843ca23c2ac02a2",
+            "listNodeProperty": "blacklist",
+            "existingIdType": "cornelsen:webcode",
+            "existingIdProperty": "webcode",
+            "generateOnEmpty": true,
             "helpers": [
                 "Should consist of 6-8 uppercase letters and numbers"
             ]
