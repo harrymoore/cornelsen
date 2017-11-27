@@ -55,23 +55,6 @@
                         "title": "Übungsnummer",
                         "type": "string"
                     }
-                },
-                "dependencies": {
-                    "chapter": [
-                        "type"
-                    ],
-                    "chapterNumber": [
-                        "type"
-                    ],
-                    "pageNumber": [
-                        "type"
-                    ],
-                    "excerciseName": [
-                        "type"
-                    ],
-                    "excerciseNumber": [
-                        "type"
-                    ]
                 }
             }
         }

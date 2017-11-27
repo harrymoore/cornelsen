@@ -32,52 +32,45 @@
                 "fields": {
                     "webcode": {
                         "type": "node-picker",
-                        "label": "Webcode"
-                    },
+                        "label": "Webcode",
+                        "helpers": [
+                            "Choose the Webcode for this reference"
+                        ]
+                                },
                     "chapter": {
                         "type": "text",
                         "label": "Kapitelname",
-                        "dependencies": {
-                            "type": [
-                                "product"
-                            ]
-                        }
+                        "helpers": [
+                            "Name of the chapter in which the webcode is placed. Used if 'type' is 'product'"
+                        ]
                     },
                     "chapterNumber": {
                         "type": "text",
                         "label": "Kapitelnummer",
-                        "dependencies": {
-                            "type": [
-                                "product"
-                            ]
-                        }
+                        "helpers": [
+                            "Number of the chapter in which the webcode is placed. Used if 'type' is 'product'"
+                        ]
                     },
                     "pageNumber": {
                         "type": "text",
                         "label": "Seite",
-                        "dependencies": {
-                            "type": [
-                                "product"
-                            ]
-                        }
+                        "helpers": [
+                            "Page number in which the webcode is placed. Used if 'type' is 'product'"
+                        ]
                     },
                     "excerciseName": {
                         "type": "text",
                         "label": "Übungsname",
-                        "dependencies": {
-                            "type": [
-                                "product"
-                            ]
-                        }
+                        "helpers": [
+                            "Name of the exercise that is referencing the webcode. Used if 'type' is 'product'"
+                        ]
                     },
                     "excerciseNumber": {
                         "type": "text",
                         "label": "Übungsnummer",
-                        "dependencies": {
-                            "type": [
-                                "product"
-                            ]
-                        }
+                        "helpers": [
+                            "Number of the exercise that is referencing the webcode. Used if 'type' is 'product'"
+                        ]
                     }
                 }
             }
