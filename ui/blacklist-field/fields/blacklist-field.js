@@ -48,11 +48,10 @@ define(function(require, exports, module) {
         beforeRenderControl: function(model, callback)
         {
             var self = this;
-            var listNodeId = this.options.listNodeId;
-            var listNodeProperty = this.options.listNodeProperty || "blacklist";
-            var existingIdType = this.options.existingIdType || "cornelsen:webcode";
-            var existingIdProperty = this.options.existingIdProperty || "webcode";
-            // var generateOnEmpty = !!this.options.generateOnEmpty;
+            var listNodeId = self.options.listNodeId;
+            var listNodeProperty = self.options.listNodeProperty || "blacklist";
+            var existingIdType = self.options.existingIdType || "cornelsen:webcode";
+            var existingIdProperty = self.options.existingIdProperty || "webcode";
 
             if (!listNodeId) {
                 return callback();
@@ -95,12 +94,46 @@ define(function(require, exports, module) {
             });
         },
 
-        afterRenderControl: function(model, callback)
-        {
+        afterRenderControl: function (model, callback) {
             var self = this;
-            self.base(model, function(){
+            var generateOnEmpty = !!self.options.generateOnEmpty;
+
+            this.base(model, function () {
+                if (!generateOnEmpty) {
+                    return callback();
+                }
+
+                self.on("ready", function (e) {
+                    if (Alpaca.isValEmpty(self.getValue()))
+                    {
+                        self.setValue(self._randomValue());
+                    }
+                });
+
                 callback();
             });
+        },
+
+        _allowedChars1: ["a","e","i","o","u"],
+        _allowedChars2: ["b","c","d","f","g","h","j","k","m","n","p","q","r","s","t","v","w","x","y","z"],
+        
+        _randomValue: function () {
+            var value = this._newValue();
+            while(!Alpaca.isValEmpty(this.blacklistedValues[value])) {
+                value = this._newValue();
+            }
+            return value;
+        },
+
+        _newValue: function () {
+            var value = "";
+            value += this._allowedChars2[ Math.floor(Math.random() * this._allowedChars2.length)];
+            value += this._allowedChars1[ Math.floor(Math.random() * this._allowedChars1.length)];
+            value += this._allowedChars2[ Math.floor(Math.random() * this._allowedChars2.length)];
+            value += this._allowedChars1[ Math.floor(Math.random() * this._allowedChars1.length)];
+            value += this._allowedChars2[ Math.floor(Math.random() * this._allowedChars2.length)];
+            value += this._allowedChars1[ Math.floor(Math.random() * this._allowedChars1.length)];
+            return value;
         },
 
         /**
