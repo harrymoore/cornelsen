@@ -48,7 +48,7 @@ define(function(require, exports, module) {
         _getThisNodeId: function()
         {
             var parts = window.location.hash.split('/');
-            var id = parts[parts.length-2] || "";
+            var id = parts[4] || "";
             return id;
         },
     
