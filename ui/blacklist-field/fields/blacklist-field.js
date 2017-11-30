@@ -44,7 +44,14 @@ define(function(require, exports, module) {
             this.base();
             this.blacklistedValues = {};
         },
-
+        
+        _getThisNodeId: function()
+        {
+            var parts = window.location.hash.split('/');
+            var id = parts[parts.length-2] || "";
+            return id;
+        },
+    
         beforeRenderControl: function(model, callback)
         {
             var self = this;
@@ -52,7 +59,8 @@ define(function(require, exports, module) {
             var listNodeProperty = self.options.listNodeProperty || "blacklist";
             var existingIdType = self.options.existingIdType || "cornelsen:webcode";
             var existingIdProperty = self.options.existingIdProperty || "webcode";
-
+            var thisNodeId = self._getThisNodeId();
+        
             if (!listNodeId) {
                 return callback();
             }
@@ -85,7 +93,9 @@ define(function(require, exports, module) {
                         console.log(JSON.stringify(list,null,2));
 
                         for(var i = 0; i < list.length; i++) {
-                            self.blacklistedValues[list[i][existingIdProperty]] = list[i]._doc || 1;
+                            if (thisNodeId !== list[i]._doc) {
+                                self.blacklistedValues[list[i][existingIdProperty]] = list[i]._doc || 1;
+                            }
                         }
 
                         callback();
