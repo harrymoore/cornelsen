@@ -4,12 +4,34 @@ define(function(require, exports, module) {
 
     var Alpaca = $.alpaca;
 
-    Alpaca.Fields.BlacklistField = Alpaca.Fields.UpperCaseField.extend(
+    Alpaca.Fields.BlacklistField = Alpaca.Fields.TextField.extend(
     /**
      * @lends Alpaca.Fields.BlacklistField.prototype
      */
     {
         blacklistedValues: {},
+
+        // /**
+        //  * @see Alpaca.ControlField#onKeyPress
+        //  */
+        // onKeyPress: function(e)
+        // {
+        //     this.base(e);
+
+        //     if (!this.systemGeneratedId) {
+        //         var _this = this;
+                
+        //         Alpaca.later(25, this, function() {
+        //             var v = _this.getValue();
+        //             _this.setValue(v);
+        //         });
+        //     }
+        // },
+
+        // onChange: function()
+        // {
+        //     this.base();
+        // },
 
         /**
          * @see Alpaca.Fields.TextField#getFieldType
@@ -19,7 +41,7 @@ define(function(require, exports, module) {
         },
 
         /**
-         * @see Alpaca.Fields.UpperCaseField#handleValidate
+         * @see Alpaca.Fields.TextField#handleValidate
          */
         handleValidate: function()
         {
@@ -117,6 +139,7 @@ define(function(require, exports, module) {
                     if (Alpaca.isValEmpty(self.getValue()))
                     {
                         self.setValue(self._randomValue());
+                        self.systemGeneratedId = true;
                     }
                 });
 

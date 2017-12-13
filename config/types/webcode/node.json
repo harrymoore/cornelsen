@@ -11,12 +11,22 @@
             "type": "string",
             "minLength": 6,
             "maxLength": 8,
-            "pattern": "^[0-9A-Z]+$"
+            "pattern": "^[0-9a-zA-Z]+$"
         },
         "title": {
             "title": "Titel",
             "type": "string",
             "required": true
+        },
+        "publishState": {
+            "title": "Publish State",
+            "type": "string",
+            "required": true,
+            "default": "NOT_PUBLISHED",
+            "enum": [
+                "NOT_PUBLISHED",
+                "PUBLISHED"
+            ]
         },
         "description": {
             "title": "Description",

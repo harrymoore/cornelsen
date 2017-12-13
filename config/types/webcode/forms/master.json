@@ -15,7 +15,7 @@
             "existingIdProperty": "webcode",
             "generateOnEmpty": true,
             "helpers": [
-                "Should consist of 6-8 uppercase letters and numbers"
+                "Should consist of 6-8 letters and numbers"
             ]
         },
         "title": {
@@ -23,6 +23,15 @@
             "label": "Titel",
             "helpers": [
                 "Used in the frontend as the headline of the webcode detail page and for webcode listings"
+            ]
+        },
+        "publishState": {
+            "title": "Publish State",
+            "type": "select",
+            "required": true,
+            "optionLabels": [
+                "Not Published",
+                "Published"
             ]
         },
         "description": {
