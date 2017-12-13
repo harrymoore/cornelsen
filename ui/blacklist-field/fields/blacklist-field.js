@@ -28,10 +28,17 @@ define(function(require, exports, module) {
         //     }
         // },
 
-        // onChange: function()
-        // {
-        //     this.base();
-        // },
+        onChange: function()
+        {
+            var self = this;
+
+            self.base();
+
+            var value = self.getValue();
+            if ("" === value) {
+                self.setValue(self._randomValue());
+            }
+        },
 
         /**
          * @see Alpaca.Fields.TextField#getFieldType
