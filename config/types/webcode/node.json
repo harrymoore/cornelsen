@@ -10,8 +10,8 @@
             "description": "Webcode is used in URLs and are entered manually by users into search fields",
             "type": "string",
             "minLength": 6,
-            "maxLength": 8,
-            "pattern": "^[0-9a-zA-Z]+$"
+            "maxLength": 50,
+            "pattern": "^[\\-0-9a-zA-Z]+$"
         },
         "title": {
             "title": "Titel",
