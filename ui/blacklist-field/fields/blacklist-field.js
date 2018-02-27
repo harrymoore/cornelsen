@@ -11,23 +11,6 @@ define(function(require, exports, module) {
     {
         blacklistedValues: {},
 
-        // /**
-        //  * @see Alpaca.ControlField#onKeyPress
-        //  */
-        // onKeyPress: function(e)
-        // {
-        //     this.base(e);
-
-        //     if (!this.systemGeneratedId) {
-        //         var _this = this;
-                
-        //         Alpaca.later(25, this, function() {
-        //             var v = _this.getValue();
-        //             _this.setValue(v);
-        //         });
-        //     }
-        // },
-
         onChange: function()
         {
             var self = this;
@@ -54,7 +37,7 @@ define(function(require, exports, module) {
         {
             var baseStatus = this.base();
             var valInfo = this.validation;
-            var value = this.getValue();
+            var value = (this.getValue()+"").toLowerCase();
             var exists = !Alpaca.isEmpty(this.blacklistedValues[value]);
 
             valInfo["blacklistedValue"] = {
@@ -73,13 +56,6 @@ define(function(require, exports, module) {
             this.base();
             this.blacklistedValues = {};
         },
-        
-        _getThisNodeId: function()
-        {
-            var parts = window.location.hash.split('/');
-            var id = parts[4] || "";
-            return id;
-        },
     
         beforeRenderControl: function(model, callback)
         {
@@ -88,10 +64,47 @@ define(function(require, exports, module) {
             var listNodeProperty = self.options.listNodeProperty || "blacklist";
             var existingIdType = self.options.existingIdType || "cornelsen:webcode";
             var existingIdProperty = self.options.existingIdProperty || "webcode";
-            var thisNodeId = self._getThisNodeId();
+            var thisNodeId = "";
+            if (Alpaca.globalContext.document) {
+                thisNodeId = Alpaca.globalContext.document._doc;
+            }
         
+            var existingList = function(callback) {
+                var query = {
+                    _type: existingIdType,
+                    _fields: {}
+                };
+
+                query[existingIdProperty] = { 
+                    $exists: true
+                };
+                if (thisNodeId) {
+                    query["_doc"] = { 
+                        $ne: thisNodeId
+                    };
+                        
+                }
+                query._fields[existingIdProperty] = 1;
+
+                Alpaca.globalContext.branch.subchain().queryNodes(query).then(function() {
+                    var list = this.asArray();
+                    // console.log(JSON.stringify(list,null,2));
+
+                    for(var i = 0; i < list.length; i++) {
+                        var existingIdPropertyValue = (list[i][existingIdProperty]+"").toLowerCase();
+                        if (existingIdPropertyValue) {
+                            self.blacklistedValues[existingIdPropertyValue] = list[i]._doc || 1;
+                        }
+                    }
+
+                    callback();
+                });            
+            };
+
             if (!listNodeId) {
-                return callback();
+                // return callback();
+                existingList(callback);
+                return;
             }
 
             Chain(Alpaca.globalContext.branch).queryNodes({
@@ -110,25 +123,7 @@ define(function(require, exports, module) {
                         self.blacklistedValues[list[i]] = 1;
                     }
 
-                    var query = {
-                        _type: existingIdType,
-                        _fields: {}
-                    };
-
-                    query._fields[existingIdProperty] = 1;
-
-                    Alpaca.globalContext.branch.subchain().queryNodes(query).then(function() {
-                        var list = this.asArray();
-                        console.log(JSON.stringify(list,null,2));
-
-                        for(var i = 0; i < list.length; i++) {
-                            if (thisNodeId !== list[i]._doc) {
-                                self.blacklistedValues[list[i][existingIdProperty]] = list[i]._doc || 1;
-                            }
-                        }
-
-                        callback();
-                    });
+                    existingList(callback);
                 });
             });
         },
