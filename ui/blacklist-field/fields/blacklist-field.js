@@ -10,6 +10,7 @@ define(function(require, exports, module) {
      */
     {
         blacklistedValues: {},
+        originalValue: null,
 
         onChange: function()
         {
@@ -35,10 +36,19 @@ define(function(require, exports, module) {
          */
         handleValidate: function()
         {
+            var self = this;
             var baseStatus = this.base();
             var valInfo = this.validation;
             var value = (this.getValue()+"").toLowerCase();
-            var exists = !Alpaca.isEmpty(this.blacklistedValues[value]);
+
+            if (!self.originalValue) {
+                self.originalValue = value;
+            }
+
+            var exists = false;
+            if (self.originalValue !== value) {
+                exists = !Alpaca.isEmpty(this.blacklistedValues[value]);
+            }
 
             valInfo["blacklistedValue"] = {
                 "message": !exists ? "" : this.getMessage("blacklistedValue"),
@@ -56,7 +66,23 @@ define(function(require, exports, module) {
             this.base();
             this.blacklistedValues = {};
         },
-    
+ 
+        _getThisNodeId: function()
+        {
+            if (Alpaca.globalContext.document) {
+                return Alpaca.globalContext.document._doc;
+            }
+
+            var parts = window.location.hash.split('/');
+            var id = parts[4] || "";
+            return id;
+        },
+
+        afterRenderControl: function(model, callback)
+        {
+            var self = this;
+        },
+
         beforeRenderControl: function(model, callback)
         {
             var self = this;
@@ -64,11 +90,8 @@ define(function(require, exports, module) {
             var listNodeProperty = self.options.listNodeProperty || "blacklist";
             var existingIdType = self.options.existingIdType || "cornelsen:webcode";
             var existingIdProperty = self.options.existingIdProperty || "webcode";
-            var thisNodeId = "";
-            if (Alpaca.globalContext.document) {
-                thisNodeId = Alpaca.globalContext.document._doc;
-            }
-        
+            var thisNodeId = self._getThisNodeId();
+
             var existingList = function(callback) {
                 var query = {
                     _type: existingIdType,
@@ -120,7 +143,8 @@ define(function(require, exports, module) {
                     var blacklistNode = this;
                     var list = blacklistNode[listNodeProperty] || [];
                     for(var i = 0; i < list.length; i++) {
-                        self.blacklistedValues[list[i]] = 1;
+                        var value = (list[i]+"").toLowerCase();
+                        self.blacklistedValues[value] = 1;
                     }
 
                     existingList(callback);
