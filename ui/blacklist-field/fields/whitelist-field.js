@@ -40,11 +40,10 @@ define(function(require, exports, module) {
                 self.originalValue = value;
             }
 
-            // var whitelisted = false;
-            // if (self.originalValue !== value) {
-            //     whitelisted = !Alpaca.isEmpty(this.whitelistedValues[value]);
-            // }
-            var whitelisted = !Alpaca.isEmpty(this.whitelistedValues[value]);
+            var whitelisted = true;
+            if (self.originalValue !== value) {
+                whitelisted = !Alpaca.isEmpty(this.whitelistedValues[value]);
+            }
 
             valInfo["whitelistedValue"] = {
                 "message": whitelisted ? "" : this.getMessage("whitelistedValue"),
@@ -53,7 +52,7 @@ define(function(require, exports, module) {
 
             var exists = false;
             if (self.originalValue !== value) {
-                exists = !Alpaca.isEmpty(this.whitelistedValues[value]);
+                exists = !Alpaca.isEmpty(this.existingValues[value]);
             }
 
             valInfo["inUseValue"] = {
@@ -105,7 +104,7 @@ define(function(require, exports, module) {
                     for(var i = 0; i < list.length; i++) {
                         var existingIdPropertyValue = (list[i][existingIdProperty]+"").toLowerCase();
                         if (existingIdPropertyValue) {
-                            self.whitelistedValues[existingIdPropertyValue] = list[i]._doc || 1;
+                            self.existingValues[existingIdPropertyValue] = list[i]._doc || 1;
                         }
                     }
 
