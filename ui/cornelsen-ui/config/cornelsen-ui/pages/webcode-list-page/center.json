@@ -10,15 +10,13 @@
             "action": "create_document"
         }],
         "columns": [{
-                "title": "Recently Modified Webcodes",
+                "title": "Webcode (title)",
                 "key": "webcode"
             },{
-                "title": "",
-                "key": "steps"
-            },{
-                "title": "",
-                "key": "resources"
-        }],
+                "title": "Description",
+                "key": "description"
+            }
+        ],
         "icon": true,
         "checkbox": true,
         "loader": "gitana",

@@ -56,15 +56,10 @@ define(function(require, exports, module) {
             {
                 query = OneTeam.searchQuery(searchTerm, ["webcode"]);
             }
-            query._type = "cxindex:company";
-            // if (user) {
-            //     query._system = {
-            //         modified_by: user.name
-            //     }
-            // }
+            query._type = "cornelsen:webcode";
 
             pagination.sort = {
-                "_system.modified_on.ms": -1
+                "webcode": 1
             };
 
             OneTeam.projectBranch(self, function () {
@@ -93,7 +88,7 @@ define(function(require, exports, module) {
         customizeActionContext: function(actionContext, model, button)
         {
                if (!actionContext.model) { actionContext.model = {}; }
-               actionContext.model.typeQName = "cxindex:company";
+               actionContext.model.typeQName = "cornelsen:webcode";
                actionContext.model.formKey = "master";
         },
 
@@ -111,14 +106,10 @@ define(function(require, exports, module) {
 
                 value =  "<h2 class='list-row-info title'>";
                 value += "<a href='" + linkUri + "'>";
-                value += OneTeam.filterXss(row.title || row.clientid) + " (" + OneTeam.filterXss(row.clientid) + ")";
+                value += OneTeam.filterXss(row.webcode || "") + " (" + OneTeam.filterXss(row.title || "") + ")";
                 value += "</a>";
                 value += "</h2>";
 
-                // summary
-                // var summary = "";
-                // summary += "Definition: " + OneTeam.filterXss(row.definition.title) + " (<a href='#/projects/" + projectId + "/documents/" + definitionId + "'>" + OneTeam.filterXss(row.definition.qname) + "</a>)";
-                // value += "<p class='list-row-info summary'>" + summary + "</p>";
                 if (row.__system()) {
                     var systemMetadata = row.__system();
 
@@ -131,23 +122,8 @@ define(function(require, exports, module) {
                     value += "<p class='list-row-info created'>Created " + bundle.relativeDate(date);
                     value += " by " + OneTeam.filterXss(systemMetadata.created_by) + "</p>";
                 }
-            } else if (item.key === "steps") {
-                var engagement = row.engagement || [];
-                var completed = 0;
-                for(i = 0; i < engagement.length; i++) {
-                    if (engagement[i].completed) {
-                        completed++;
-                    }
-                }
-                value = "<p>Completed " + completed + " of " + engagement.length + " engagement steps</p>";
-            } else if (item.key === "resources") {
-                var resources = row.resources || [];
-                value = resources.length + " resource(s) attached";
-                // for(i = 0; i < resources.length; i++) {
-                    // value += "<li><p class='list-row-info>" + OneTeam.filterXss(resources[i].ResourceTitle) + "</p></li>";
-                //     value += "<p class='list-row-info>" + OneTeam.filterXss(resources[i].ResourceTitle) + "</p>";
-                // }
-                // value += "</ul>";
+            } else if (item.key === "description") {
+                value = OneTeam.filterXss(row.title || "");
             }
 
             return value;
