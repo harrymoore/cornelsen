@@ -1,0 +1,61 @@
+{
+    "type": "webcode-list",
+    "config": {
+        "chrome": false,
+        "buttons": [{
+            "key": "create-webcode",
+            "title": "Create a Webcode",
+            "iconClass": "fa fa-plus",
+            "align": "left",
+            "action": "create_document"
+        }],
+        "columns": [{
+                "title": "Recently Modified Webcodes",
+                "key": "webcode"
+            },{
+                "title": "",
+                "key": "steps"
+            },{
+                "title": "",
+                "key": "resources"
+        }],
+        "icon": true,
+        "checkbox": true,
+        "loader": "gitana",
+        "selectorGroups": {
+            "multi-documents-action-selector-group": {
+                "actions": []
+            },
+            "sort-selector-group": {
+                "fields": [{
+                    "key": "title",
+                    "title": "Title",
+                    "field": "title"
+                }, {
+                    "key": "description",
+                    "title": "Description",
+                    "field": "description"
+                }, {
+                    "key": "createdOn",
+                    "title": "Created On",
+                    "field": "_system.created_on.ms"
+                }, {
+                    "key": "createdBy",
+                    "title": "Created By",
+                    "field": "_system.created_by"
+                }, {
+                    "key": "modifiedOn",
+                    "title": "Modified On",
+                    "field": "_system.modified_on.ms"
+                }, {
+                    "key": "modifiedBy",
+                    "title": "Modified By",
+                    "field": "_system.modified_by"
+                }]
+            }
+        },
+        "options": {
+            "filter": true
+        }
+    }
+}

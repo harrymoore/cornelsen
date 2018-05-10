@@ -1,0 +1,21 @@
+{
+    "condition": {
+        "evaluator": "context-project"
+    },
+    "config": {
+        "context": {
+            "items": [{
+                "key": "project/content/heading",
+                "items": [{
+                    "key": "webcode-page/webcode-list",
+                    "title": "Webcodes",
+                    "uri": "#/projects/{projectId}/webcode-list",
+                    "iconClass": "fa fa-pencil",
+                    "allowPermission": [
+                        "read"
+                    ]
+                }]
+            }]
+        }
+    }
+}

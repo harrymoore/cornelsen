@@ -1,0 +1,6 @@
+{
+    "title": "Webcodes",
+    "uri": "/projects/{projectId}/webcode-list",
+    "extends": "project/_project",
+    "template": "default"
+}
