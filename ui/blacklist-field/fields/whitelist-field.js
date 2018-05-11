@@ -35,10 +35,7 @@ define(function(require, exports, module) {
             var baseStatus = this.base();
             var valInfo = this.validation;
             var value = (this.getValue()+"").toLowerCase();
-
-            if (!self.originalValue) {
-                self.originalValue = value;
-            }
+            var inUseNode = "";
 
             var whitelisted = true;
             if (self.originalValue !== value) {
@@ -46,21 +43,22 @@ define(function(require, exports, module) {
             }
 
             valInfo["whitelistedValue"] = {
-                "message": whitelisted ? "" : this.getMessage("whitelistedValue"),
+                "message": this.getMessage("whitelistedValue"),
                 "status": whitelisted
             };
 
-            var exists = false;
-            if (self.originalValue !== value) {
-                exists = !Alpaca.isEmpty(this.existingValues[value]);
+            var exists = true;
+            if (""+self.originalValue !== value) {
+                inUseNode = this.existingValues[value];
+                exists = Alpaca.isEmpty(inUseNode);
             }
 
             valInfo["inUseValue"] = {
-                "message": !exists ? "" : this.getMessage("inUseValue"),
-                "status": !exists
+                "message": this.getMessage("whitelist-inUseValue") + inUseNode,
+                "status": exists
             };
 
-            return baseStatus || valInfo["whitelistedValue"]["status"] || valInfo["inUseValue"]["status"];
+            return baseStatus && valInfo["whitelistedValue"]["status"] && valInfo["inUseValue"]["status"];
         },
         
         /**
@@ -71,12 +69,6 @@ define(function(require, exports, module) {
             this.base();
             this.whitelistedValues = {};
         },
-
-        // afterRenderControl: function(model, callback)
-        // {
-        //     var self = this;
-        //     self.base();
-        // },
 
         beforeRenderControl: function(model, callback)
         {
@@ -97,7 +89,7 @@ define(function(require, exports, module) {
                 };
                 query._fields[existingIdProperty] = 1;
 
-                Alpaca.globalContext.branch.subchain().queryNodes(query).then(function() {
+                Alpaca.globalContext.branch.subchain().queryNodes(query, {limit:-1}).then(function() {
                     var list = this.asArray();
                     // console.log(JSON.stringify(list,null,2));
 
@@ -206,7 +198,7 @@ define(function(require, exports, module) {
     
     Alpaca.registerMessages({
         "whitelistedValue": "Value is not allowed. Must be in whitelist",
-        "inUseValue": "Value is in use"
+        "whitelist-inUseValue": "Value is in use by node: "
     });
 
     Alpaca.registerFieldClass("whitelist", Alpaca.Fields.WhitelistField);

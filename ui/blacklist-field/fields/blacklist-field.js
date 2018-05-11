@@ -109,7 +109,7 @@ define(function(require, exports, module) {
                 }
                 query._fields[existingIdProperty] = 1;
 
-                Alpaca.globalContext.branch.subchain().queryNodes(query).then(function() {
+                Alpaca.globalContext.branch.subchain().queryNodes(query, {limit:-1}).then(function() {
                     var list = this.asArray();
                     // console.log(JSON.stringify(list,null,2));
 
