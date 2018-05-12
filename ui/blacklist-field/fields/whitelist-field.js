@@ -37,6 +37,10 @@ define(function(require, exports, module) {
             var value = (this.getValue()+"").toLowerCase();
             var inUseNode = "";
 
+            if (!self.originalValue) {
+                self.originalValue = value;
+            }
+
             var whitelisted = true;
             if (self.originalValue !== value) {
                 whitelisted = !Alpaca.isEmpty(this.whitelistedValues[value]);
