@@ -55,112 +55,27 @@
         doGitanaQuery: function(context, model, searchTerm, query, pagination, callback)
         {
             var self = this;
-
             var b = self.branch();
 
-            var o = {
-                query: {}
+            query = {
+                _type: model.typeQName || "cornelsen:webcode"
             };
-
-            if (model.query)
-            {
-                o.query = JSON.parse(JSON.stringify(model.query));
-            }
-
-            if (query)
-            {
-                Ratchet.copyInto(o.query, query);
-            }
 
             if (searchTerm)
             {
-                o.search = searchTerm;
+                query.webcode = { 
+                    "$regex": searchTerm.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'),
+                    "$options": "i"
+                };
             }
 
-            var typeQNames = [];
-            if (model.typeQName)
-            {
-                typeQNames.push(model.typeQName);
-            }
-            if (model.typeQNames)
-            {
-                for (var i = 0; i < model.typeQNames.length; i++)
-                {
-                    if (!typeQNames.contains(model.typeQNames[i]))
-                    {
-                        typeQNames.push(model.typeQNames[i]);
-                    }
-                }
-            }
-
-            var completionFn = function()
-            {
-                if (typeQNames.length > 0)
-                {
-                    o.query._type = {
-                        "$in": typeQNames
-                    };
-                }
-
-                Chain(b).findNodes(o, pagination).then(function() {
-                    callback(this);
-                });
+            pagination.sort = {
+                webcode: 1
             };
 
-            // if includeChildTypes, then we go back to the server for every definition QName in typeQNames
-            // and load children type QNames.  We include those in our typeQNames.
-            if (model.includeChildTypes)
-            {
-                OneTeam.projectDefinitions(self, function(definitionDescriptors) {
-
-                    var loadedTypeQNames = [];
-
-                    var fns = [];
-                    for (var i = 0; i < typeQNames.length; i++)
-                    {
-                        var definition = null;
-                        var descriptor = definitionDescriptors[typeQNames[i]];
-                        if (descriptor)
-                        {
-                            definition = descriptor.definition;
-                        }
-                        if (definition)
-                        {
-                            var fn = function (definition, loadedTypeNames) {
-                                return function (done) {
-
-                                    definition.listChildDefinitions({
-                                        "limit": -1,
-                                        "ignoreParent": true
-                                    }).each(function () {
-                                        loadedTypeNames.push(this.getQName());
-                                    }).then(function () {
-                                        done();
-                                    });
-
-                                };
-                            }(definition, loadedTypeQNames);
-                            fns.push(fn);
-                        }
-                    }
-                    Ratchet.parallel(fns, function () {
-
-                        for (var i = 0; i < loadedTypeQNames.length; i++)
-                        {
-                            if (typeQNames.indexOf(loadedTypeQNames[i]) === -1)
-                            {
-                                typeQNames.push(loadedTypeQNames[i]);
-                            }
-                        }
-
-                        completionFn();
-                    });
-                });
-
-                return;
-            }
-
-            completionFn();
+            Chain(b).queryNodes(query, pagination).then(function() {
+                return callback(this);
+            });
         },
 
         iconUri: function(row, model, context)
