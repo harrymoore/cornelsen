@@ -34,6 +34,18 @@
             });
         },
 
+        acquireTitle: function(item, callback)
+        {
+            var self = this;
+
+            // if item has a webcode field, we use that
+            if (item.webcode) {
+                return callback(null, item.webcode);
+            } else {
+                return self.base(item, callback);
+            }
+        },
+
         loadByRef: function(ref, callback)
         {
             var self = this;
@@ -53,21 +65,8 @@
             var self = this;
 
             return {
-                "title": self.options.picker.pickerTitle || "Select a Node",
-                "type": "gitana-node-picker",
-                "columns": [{
-                    "title": "Webcode",
-                    "property": "webcode",
-                    "sort": true
-                }, {
-                    "title": "Title",
-                    "property": "title",
-                    "sort": true
-                }, {
-                    "title": "Description",
-                    "property": "description",
-                    "sort": false
-                }]
+                "title": "Select a Webcode",
+                "type": "webcode-node-picker"
             };
 
         },

@@ -2,7 +2,7 @@
 Implement a custom node picker for selecting webcodes
 
 Register as a module in Platform Settings.
-module-id: webcode-node-picker
+module-id: webcode-node-picker-field
 URL: https://github.com/harrymoore/cornelsen.git
 Path: /ui/webcode-node-picker
 
