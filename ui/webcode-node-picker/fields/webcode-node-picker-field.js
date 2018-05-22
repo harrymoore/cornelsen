@@ -34,13 +34,26 @@
             });
         },
 
+        generateItem: function(picked)
+        {
+            var self = this;
+            var item = self.base(picked);
+
+            if (picked.webcode) {
+                // item.title = picked.webcode;
+                item.webcode = picked.webcode;
+            }
+
+            return item;
+        },
+
         acquireTitle: function(item, callback)
         {
             var self = this;
 
             // if item has a webcode field, we use that
             if (item.webcode) {
-                return callback(null, item.webcode);
+                return callback(null, item.webcode || item.title || item.id);
             } else {
                 return self.base(item, callback);
             }
