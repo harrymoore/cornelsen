@@ -1,4 +1,4 @@
-define(function(require, exports, module) {
+    define(function(require, exports, module) {
 
     var $ = require("jquery");
 
@@ -31,31 +31,48 @@ define(function(require, exports, module) {
             return "blacklist-field";
         },
 
-        /**
-         * @see Alpaca.Fields.TextField#handleValidate
-         */
-        handleValidate: function()
-        {
+        validator: function(callback) {
             var self = this;
-            var baseStatus = this.base();
-            var valInfo = this.validation;
-            var value = (this.getValue()+"").toLowerCase();
+            var value = (self.getValue()+"").toLowerCase();
+            var thisNodeId = self._getThisNodeId();
 
             if (!self.originalValue) {
                 self.originalValue = value;
             }
 
-            var exists = false;
-            if (self.originalValue !== value) {
-                exists = !Alpaca.isEmpty(this.blacklistedValues[value]);
-            }
+            var exists = !Alpaca.isEmpty(self.blacklistedValues[value]);
 
-            valInfo["blacklistedValue"] = {
-                "message": !exists ? "" : this.getMessage("blacklistedValue"),
-                "status": !exists
+            // query to make sure the value doesn't already exist in another webcode
+            let query = {
+                _type: self.options.existingIdType || "cornelsen:webcode",
+                _fields: {
+                    _type: 1,
+                    _doc: 1,
+                    title: 1
+                }
             };
+            query[self.options.existingIdProperty || "webcode"] = value;
+            query._fields[self.options.existingIdProperty || "webcode"] = 1;
+            if (thisNodeId) {
+                query._doc = { 
+                    $ne: thisNodeId
+                };
+            }
+                
+            Alpaca.globalContext.branch.subchain().queryNodes(query).then(function() {
+                var list = this.asArray();
 
-            return baseStatus && valInfo["blacklistedValue"]["status"];
+                if (list.length) {
+                    exists = true;
+                }
+
+                let valInfo = {
+                    message: !exists ? "" : self.getMessage("blacklistedValue"),
+                    status: !exists
+                };
+
+                callback(valInfo);
+            });
         },
         
         /**
@@ -65,6 +82,8 @@ define(function(require, exports, module) {
         {
             this.base();
             this.blacklistedValues = {};
+            this.whitelistedValues = {};
+            this.options.validator = this.validator;
         },
  
         _getThisNodeId: function()
@@ -78,64 +97,17 @@ define(function(require, exports, module) {
             return id;
         },
 
-        afterRenderControl: function(model, callback)
-        {
-            var self = this;
-        },
-
         beforeRenderControl: function(model, callback)
         {
             var self = this;
             var listNodeId = self.options.listNodeId;
             var listNodeProperty = self.options.listNodeProperty || "blacklist";
-            var existingIdType = self.options.existingIdType || "cornelsen:webcode";
-            var existingIdProperty = self.options.existingIdProperty || "webcode";
-            var thisNodeId = self._getThisNodeId();
-
-            var existingList = function(callback) {
-                var query = {
-                    _type: existingIdType,
-                    _fields: {}
-                };
-
-                query[existingIdProperty] = { 
-                    $exists: true
-                };
-                if (thisNodeId) {
-                    query["_doc"] = { 
-                        $ne: thisNodeId
-                    };
-                        
-                }
-                query._fields[existingIdProperty] = 1;
-
-                Alpaca.globalContext.branch.subchain().queryNodes(query, {limit:-1}).then(function() {
-                    var list = this.asArray();
-                    // console.log(JSON.stringify(list,null,2));
-
-                    for(var i = 0; i < list.length; i++) {
-                        var existingIdPropertyValue = (list[i][existingIdProperty]+"").toLowerCase();
-                        if (existingIdPropertyValue) {
-                            self.blacklistedValues[existingIdPropertyValue] = list[i]._doc || 1;
-                        }
-                    }
-
-                    callback();
-                });            
-            };
-
-            if (!listNodeId) {
-                // return callback();
-                existingList(callback);
-                return;
-            }
 
             Chain(Alpaca.globalContext.branch).queryNodes({
                 "_doc": listNodeId
             }).then(function() {
                 if (this.size() === 0) {
                     console.log("Could not find blacklist node");
-                    // return callback("Could not find blacklist node");
                     return callback();
                 }
     
@@ -147,7 +119,7 @@ define(function(require, exports, module) {
                         self.blacklistedValues[value] = 1;
                     }
 
-                    existingList(callback);
+                    return callback();
                 });
             });
         },
@@ -265,6 +237,4 @@ define(function(require, exports, module) {
     });
 
     Alpaca.registerFieldClass("blacklist", Alpaca.Fields.BlacklistField);
-
 });
-
