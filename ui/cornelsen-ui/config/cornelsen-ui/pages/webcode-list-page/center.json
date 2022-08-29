@@ -26,9 +26,9 @@
             },
             "sort-selector-group": {
                 "fields": [{
-                    "key": "title",
-                    "title": "Title",
-                    "field": "title"
+                    "key": "webcode",
+                    "title": "Webcode",
+                    "field": "webcode"
                 }, {
                     "key": "description",
                     "title": "Description",

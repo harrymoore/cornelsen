@@ -58,9 +58,9 @@ define(function(require, exports, module) {
             }
             query._type = "cornelsen:webcode";
 
-            pagination.sort = {
-                "webcode": 1
-            };
+            // pagination.sort = {
+            //     "webcode": 1
+            // };
 
             OneTeam.projectBranch(self, function () {
 
